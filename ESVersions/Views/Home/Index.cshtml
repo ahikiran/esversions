@@ -1,0 +1,34 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>Software Versions</h1>
+    <p class="lead">Enter a version number below to retrieve a list of software with version higher than your input.</p>
+    @using (Html.BeginForm())
+    {        
+        <p><input type="text" required class="form-control" placeholder="version" id="query" /></p>
+        <p><button type="submit" id="btnGetList" class="btn btn-primary btn-lg">Get List &raquo;</button></p>
+        <div class="row col-md-12" id="SoftwareListTable">
+        </div>
+    }
+
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        $("#btnGetList").click(function () {       
+            if ($("#query").val()) {
+                $.ajax({
+                    url: "/Home/SwList",
+                    data: { query: $("#query").val() },
+                    success: function (data) {
+                        $("#SoftwareListTable").html(data);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) { $("#SoftwareListTable").html("Please check the version entered."); }
+                });
+                return false;
+            }
+        });
+    </script>
+}
